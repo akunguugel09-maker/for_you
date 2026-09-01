@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>for you Bu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(145deg, #2d0a1e 0%, #4a1a33 100%);
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% {
+                opacity: 0.2;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        
+        .card {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 56px;
+            padding: 48px 40px 56px;
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            min-height: 440px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        
+        .step {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .step.hidden {
+            display: none;
+        }
+
+      
+        .step-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: clamp(2rem, 6vw, 2.8rem);
+            color: #ffb6c1;
+            text-shadow: 0 4px 20px rgba(255, 182, 193, 0.3);
+            margin-bottom: 8px;
+        }
+
+        .step-desc {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+        }
+
+        
+        .input-group {
+            width: 100%;
+            max-width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .input-group input {
+            padding: 16px 20px;
+            border-radius: 60px;
+            border: 2px solid rgba(255, 182, 193, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 1.1rem;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            outline: none;
+            transition: border 0.3s ease;
+            text-align: center;
+        }
+
+        .input-group input:focus {
+            border-color: #ff8a9c;
+        }
+
+        .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+            font-weight: 400;
+        }
+
+      
+        .btn-next {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #ff8a9c, #ff6f91);
+            border: none;
+            padding: 14px 44px;
+            border-radius: 60px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a0d14;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 8px 30px rgba(255, 111, 145, 0.4);
+            letter-spacing: 0.5px;
+            position: relative;
+            touch-action: manipulation;
+            user-select: none;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(255, 111, 145, 0.6);
+        }
+
+        .btn-next:active {
+            transform: scale(0.96);
+        }
+
+        .btn-container {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            min-height: 80px;
+            align-items: center;
+        }
+
+        
+        #ageNextBtn {
+            transition: left 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        
+        .cake-icon {
+            font-size: 72px;
+            line-height: 1;
+            display: block;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-16px) scale(1.05);
+            }
+        }
+
+        .greeting {
+            font-family: 'Fredoka One', cursive;
+            font-size: clamp(2.4rem, 8vw, 4rem);
+            background: linear-gradient(135deg, #ffb6c1, #ff8a9c, #ff6f91);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+        }
+
+        .sub-greeting {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #ffb6c1, #ff8a9c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .name-display {
+            font-family: 'Fredoka One', cursive;
+            font-size: clamp(2rem, 6vw, 3.2rem);
+            color: #fff;
+            text-shadow: 0 4px 30px rgba(255, 111, 145, 0.5);
+            margin: 4px 0 8px;
+        }
+
+        .name-display span {
+            background: linear-gradient(135deg, #ffb6c1, #ff6f91);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .message {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.8;
+            max-width: 420px;
+            margin: 0 auto 20px;
+            font-weight: 400;
+        }
+
+        .message strong {
+            color: #ffb6c1;
+            font-weight: 700;
+        }
+
+        .age-badge {
+            display: inline-block;
+            padding: 8px 28px;
+            border-radius: 40px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .age-badge strong {
+            color: #ffb6c1;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .btn-celebrate {
+            background: linear-gradient(135deg, #ffb6c1, #ff6f91);
+            border: none;
+            padding: 14px 40px;
+            border-radius: 60px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a0d14;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(255, 111, 145, 0.4);
+            transition: all 0.3s ease;
+            margin-top: 8px;
+        }
+
+        .btn-celebrate:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 14px 40px rgba(255, 111, 145, 0.6);
+        }
+
+        
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        
+        @media (max-width: 500px) {
+            .card {
+                padding: 32px 20px 40px;
+                border-radius: 36px;
+                min-height: 380px;
+            }
+            .btn-next {
+                padding: 12px 28px;
+                font-size: 1rem;
+            }
+            .input-group input {
+                padding: 14px 16px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <canvas id="confetti-canvas"></canvas>
+
+    <div class="card" id="mainCard">
+      
+        <div class="step" id="stepName">
+            <h2 class="step-title">jenengane sopo?</h2>
+            <p class="step-desc">silahkan input disini</p>
+            <div class="input-group">
+                <input type="text" id="nameInput" placeholder="Tulis namamu..." maxlength="30" autofocus />
+                <div class="btn-container">
+                    <button class="btn-next" id="nameNextBtn">Next</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="step hidden" id="stepAge">
+            <h2 class="step-title">Umurmu?</h2>
+            <p class="step-desc">Masukkan angka</p>
+            <div class="input-group">
+                <input type="number" id="ageInput" placeholder="Contoh: 21" min="1" max="120" />
+                <div class="btn-container" id="ageBtnContainer">
+                    <button class="btn-next" id="ageNextBtn">Next</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="step hidden" id="stepFinal">
+            <span class="cake-icon">🎂</span>
+            <h1 class="greeting">Happy Birthday!</h1>
+            <p class="sub-greeting">✨ Selamat Ulang Tahun ✨</p>
+            <h2 class="name-display">Untuk <span id="finalName">Kamu</span> 🥳</h2>
+            <p class="message">
+                Semoga di usia ke-<strong id="finalAge">—</strong> ini,kamu diberikan umur panjang nan<strong> sehat</strong> + <strong> keberkahan </strong>yang melimpah
+               tidak lupa <strong>ceria</strong> selalu,dan selalu
+                dikelilingi kebahagiaan 💖
+            </p>
+            <button class="btn-celebrate" id="celebrateBtn">🎉 Rayakan!</button>
+            
+        </div>
+
+    </div>
+
+    <script>
+        
+        (function createStars() {
+            const container = document.getElementById('stars');
+            const count = 130;
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 4 + 2;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+                star.style.animationDelay = (Math.random() * 5) + 's';
+                container.appendChild(star);
+            }
+        })();
+
+        
+        (function confetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+
+            let W = window.innerWidth;
+            let H = window.innerHeight;
+            canvas.width = W;
+            canvas.height = H;
+
+            const particles = [];
+            const colors = ['#ffb6c1', '#ff8a9c', '#ff6f91', '#ff99aa', '#ffccd5', '#ffd1dc', '#f8b4c8'];
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * W;
+                    this.y = Math.random() * H - H;
+                    this.size = Math.random() * 8 + 4;
+                    this.speedY = Math.random() * 4 + 2;
+                    this.speedX = (Math.random() - 0.5) * 2;
+                    this.color = colors[Math.floor(Math.random() * colors.length)];
+                    this.rotation = Math.random() * 360;
+                    this.rotationSpeed = (Math.random() - 0.5) * 6;
+                    this.opacity = Math.random() * 0.6 + 0.4;
+                }
+                update() {
+                    this.y += this.speedY;
+                    this.x += this.speedX + Math.sin(this.y * 0.01) * 0.4;
+                    this.rotation += this.rotationSpeed;
+                    if (this.y > H + 20) {
+                        this.reset();
+                        this.y = -20;
+                    }
+                    if (this.x < -20) this.x = W + 20;
+                    if (this.x > W + 20) this.x = -20;
+                }
+                draw() {
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    ctx.rotate((this.rotation * Math.PI) / 180);
+                    ctx.globalAlpha = this.opacity;
+                    ctx.fillStyle = this.color;
+                    ctx.fillRect(-this.size / 2, -this.size / 4, this.size, this.size / 2);
+                    ctx.restore();
+                }
+            }
+
+            for (let i = 0; i < 160; i++) {
+                const p = new Particle();
+                p.y = Math.random() * H;
+                particles.push(p);
+            }
+
+            let animId = null;
+            let isRunning = false;
+
+            function loop() {
+                ctx.clearRect(0, 0, W, H);
+                for (const p of particles) {
+                    p.update();
+                    p.draw();
+                }
+                animId = requestAnimationFrame(loop);
+            }
+
+            function start() {
+                if (isRunning) return;
+                isRunning = true;
+                for (const p of particles) {
+                    p.y = Math.random() * H - H;
+                    p.x = Math.random() * W;
+                }
+                loop();
+            }
+
+            function stop() {
+                if (animId) {
+                    cancelAnimationFrame(animId);
+                    animId = null;
+                }
+                isRunning = false;
+                ctx.clearRect(0, 0, W, H);
+            }
+
+            window.addEventListener('resize', () => {
+                W = window.innerWidth;
+                H = window.innerHeight;
+                canvas.width = W;
+                canvas.height = H;
+            });
+
+            window.__confetti = { start, stop };
+        })();
+      
+        (function flow() {
+            const stepName = document.getElementById('stepName');
+            const stepAge = document.getElementById('stepAge');
+            const stepFinal = document.getElementById('stepFinal');
+
+            const nameInput = document.getElementById('nameInput');
+            const ageInput = document.getElementById('ageInput');
+            const nameNextBtn = document.getElementById('nameNextBtn');
+            const ageNextBtn = document.getElementById('ageNextBtn');
+            const ageBtnContainer = document.getElementById('ageBtnContainer');
+
+            const finalName = document.getElementById('finalName');
+            const finalAge = document.getElementById('finalAge');
+            const finalAgeBadge = document.getElementById('finalAgeBadge');
+
+            // State counter (tanpa tampilan)
+            let nameClickCount = 0;
+            let ageClickCount = 0;
+            let userName = '';
+            let userAge = '';
+            nameNextBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const name = nameInput.value.trim();
+                if (name === '') {
+                    alert('Isi namanya dulu ya 😊');
+                    return;
+                }
+                userName = name;
+                nameClickCount++;
+
+                if (nameClickCount === 3) {
+                    alert(`cieee nungguin, coba one more ${userName} 😘`);
+                    
+                    stepName.classList.add('hidden');
+                    stepAge.classList.remove('hidden');
+                    ageClickCount = 0;
+                    ageInput.focus();
+                    
+                    ageNextBtn.style.position = 'relative';
+                    ageNextBtn.style.left = 'auto';
+                    ageNextBtn.style.top = 'auto';
+                } else {
+                    
+                    nameNextBtn.style.transform = 'scale(0.95)';
+                    setTimeout(() => nameNextBtn.style.transform = '', 150);
+                }
+            });
+
+            
+            function moveAgeButtonRandomly() {
+                const container = ageBtnContainer;
+                const btn = ageNextBtn;
+                const containerRect = container.getBoundingClientRect();
+                const btnRect = btn.getBoundingClientRect();
+                const maxX = containerRect.width - btnRect.width - 10;
+                const maxY = containerRect.height - btnRect.height - 10;
+                const randomX = Math.max(0, Math.floor(Math.random() * maxX));
+                const randomY = Math.max(0, Math.floor(Math.random() * maxY));
+                btn.style.position = 'absolute';
+                btn.style.left = randomX + 'px';
+                btn.style.top = randomY + 'px';
+                container.style.position = 'random';
+                container.style.minHeight = '80px';
+            }
+
+            ageNextBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const age = ageInput.value.trim();
+                if (age === '' || isNaN(age) || parseInt(age) <= 0) {
+                    alert('Masukkan umur yang valid  😉');
+                    return;
+                }
+                userAge = age;
+                ageClickCount++;
+
+                if (ageClickCount < 3) {
+                    moveAgeButtonRandomly();
+                    ageNextBtn.style.transform = 'scale(0.9)';
+                    setTimeout(() => ageNextBtn.style.transform = '', 200);
+                }
+
+                if (ageClickCount === 3) {
+                    stepAge.classList.add('hidden');
+                    stepFinal.classList.remove('hidden');
+                    finalName.textContent = userName;
+                    finalAge.textContent = userAge;
+                    finalAgeBadge.textContent = userAge;
+                    
+                    ageNextBtn.style.position = 'relative';
+                    ageNextBtn.style.left = 'auto';
+                    ageNextBtn.style.top = 'auto';
+                }
+            });
+
+            
+            const celebrateBtn = document.getElementById('celebrateBtn');
+            let confettiActive = false;
+
+            celebrateBtn.addEventListener('click', function() {
+                const c = window.__confetti;
+                if (!c) return;
+
+                if (!confettiActive) {
+                    c.start();
+                    confettiActive = true;
+                    celebrateBtn.textContent = '🎉 Sedang Berpesta...';
+                    setTimeout(() => {
+                        if (confettiActive) {
+                            c.stop();
+                            confettiActive = false;
+                            celebrateBtn.textContent = '🎊 Rayakan Lagi!';
+                        }
+                    }, 4500);
+                } else {
+                    c.stop();
+                    confettiActive = false;
+                    celebrateBtn.textContent = '🎊 Rayakan Lagi!';
+                }
+            });
+
+            
+            ageBtnContainer.style.minHeight = '80px';
+            ageNextBtn.style.position = 'relative';
+            ageNextBtn.style.left = 'auto';
+            ageNextBtn.style.top = 'auto';
+        })();
+      
+        (function playBackgroundMusic() {
+            let ctx = null;
+            let notes = [523, 587, 659, 784, 880, 988, 1175];
+            let intervalId = null;
+            let isPlaying = false;
+
+            function getAudioContext() {
+                if (!ctx) {
+                    ctx = new(window.AudioContext || window.webkitAudioContext)();
+                }
+                return ctx;
+            }
+
+            function playNote(freq, duration = 0.18, volume = 0.10) {
+                try {
+                    const audioCtx = getAudioContext();
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + duration);
+                } catch (_) { /* silent fail */ }
+            }
+
+            function playRandomMelody() {
+                if (!isPlaying) return;
+                const note = notes[Math.floor(Math.random() * notes.length)];
+                playNote(note, 0.15 + Math.random() * 0.1, 0.08 + Math.random() * 0.04);
+                if (Math.random() > 0.7) {
+                    setTimeout(() => {
+                        playNote(note * 1.25, 0.1, 0.05);
+                    }, 80);
+                }
+            }
+
+            function startMusic() {
+                if (isPlaying) return;
+                try {
+                    getAudioContext();
+                    isPlaying = true;
+                    playNote(523, 0.2, 0.08);
+                    intervalId = setInterval(playRandomMelody, 400);
+                } catch (_) { /* ignore */ }
+            }
+
+            function stopMusic() {
+                if (intervalId) {
+                    clearInterval(intervalId);
+                    intervalId = null;
+                }
+                isPlaying = false;
+                if (ctx && ctx.state === 'running') {
+                    ctx.suspend();
+                }
+            }
+
+            const events = ['click', 'touchstart', 'keydown'];
+            function initMusic() {
+                startMusic();
+                events.forEach(e => document.removeEventListener(e, initMusic));
+            }
+            events.forEach(e => document.addEventListener(e, initMusic, { once: false }));
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    if (intervalId) {
+                        clearInterval(intervalId);
+                        intervalId = null;
+                    }
+                    if (ctx && ctx.state === 'running') {
+                        ctx.suspend();
+                    }
+                } else {
+                    if (isPlaying && ctx) {
+                        ctx.resume().then(() => {
+                            if (!intervalId) {
+                                intervalId = setInterval(playRandomMelody, 400);
+                            }
+                        }).catch(() => {});
+                    }
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
